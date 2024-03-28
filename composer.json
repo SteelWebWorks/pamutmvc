@@ -4,6 +4,10 @@
     "type": "project",
     "require": {
         "php": "^8.2",
+        "doctrine/orm": "^3",
+        "doctrine/dbal": "^4",
+        "symfony/cache": "^7",
+        "dotenv-org/phpdotenv-vault": "^0.2.4"
     },
     "license": "MIT",
     "autoload": {
