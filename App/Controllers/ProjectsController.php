@@ -53,7 +53,7 @@ class ProjectsController extends BaseController
     /**
      * @throws ORMException
      */
-    public function create(): true
+    public function create()
     {
         $statuses = $this->entityManager->getRepository(Status::class)->findAll();
         $owners = $this->entityManager->getRepository(Owner::class)->findAll();
