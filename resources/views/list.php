@@ -3,6 +3,7 @@
 use App\Models\Project;
 /**
  * @var Project[]|array|object[] $projects
+ * @var int $totalPageCount
  */
 foreach ($projects as $project) { ?>
     <div class="card mb-2">
@@ -18,6 +19,15 @@ foreach ($projects as $project) { ?>
         </div>
     </div>
 <?php } ?>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <?php for($i=1; $i<=$totalPageCount; $i++) { ?>
+            <li class="page-item"><a class="page-link" href="#"><?php echo $i ?></a></li>
+            <?php } ?>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
 </div>
 <script type="application/javascript">
     $(function() {

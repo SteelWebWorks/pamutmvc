@@ -2,25 +2,38 @@
 
 namespace App\Controllers;
 
-use App\Database\Database;
-use App\Http\Request;
-use App\Http\Response;
 use App\Models\Owner;
 use App\Models\Project;
 use App\Models\Status;
 use App\Validation;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ProjectsController extends BaseController
 {
+    /**
+     * @throws \Exception
+     */
     public function list(): void
     {
-        $projects = $this->entityManager
+        $query = $this->entityManager
             ->getRepository(Project::class)
-            ->findAll();
-        $this->view->renderContent('list', compact('projects'));
+            ->createQueryBuilder('p');
+
+        $paginator = new Paginator($query);
+
+        $currentPage = ($this->request->getRouteParam('page')) ?: 1;
+        $totalItems = count($paginator);
+        $totalPageCount = ceil($totalItems/10);
+        $nextPage = (($currentPage < $totalPageCount) ? $currentPage + 1 : $totalPageCount);
+        $prevPage = (($currentPage > 1) ? $currentPage -1 : 1);
+        $projects = $paginator
+            ->getQuery()
+            ->setFirstResult(10*($currentPage-1))
+            ->setMaxResults(10)
+            ->getResult();
+        $this->view->renderContent('list', compact('projects', 'currentPage', 'nextPage', 'prevPage', 'totalPageCount'));
 
     }
 
@@ -40,7 +53,7 @@ class ProjectsController extends BaseController
     /**
      * @throws ORMException
      */
-    public function create()
+    public function create(): true
     {
         $statuses = $this->entityManager->getRepository(Status::class)->findAll();
         $owners = $this->entityManager->getRepository(Owner::class)->findAll();
