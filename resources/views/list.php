@@ -13,9 +13,21 @@ use App\Models\Project;
                 $('div#project-list').html(response);
             })
         })
+        $('#status').on('change', function() {
+           $('#search-form').submit();
+        });
     })
 </script>
-
+<form id="search-form" action="/projects/<?php echo $currentPage ?>">
+    <div class="form-group mt-3 mb-2">
+        <select class="form-control" name="status" id="status">
+            <option value="0">Select a status for filter</option>
+            <?php foreach ($statuses as $status) { ?>
+                <option value="<?php echo $status->getId() ?>" <?php if ($filterStatus == $status->getId()) { echo "selected"; }?> ><?php echo $status->getName() ?></option>
+            <?php } ?>
+        </select>
+    </div>
+</form>
 <div id="project-list">
 <?php foreach ($projects as $project) { ?>
     <div class="card mb-2">
@@ -38,13 +50,13 @@ use App\Models\Project;
             <?php if ($currentPage > 1) { ?>
                 <li class="page-item"><a class="page-link" href="/projects/1">First</a></li>
             <?php } ?>
-            <li class="page-item"><a class="page-link" href="/projects/<?php echo $prevPage; ?>">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="/projects/<?php echo $prevPage; if($filterStatus){ echo "?status=" . $filterStatus; } ?>">Previous</a></li>
             <?php for($i=1; $i<=$totalPageCount; $i++) { ?>
-                <li class="page-item"><a class="page-link <?php if($currentPage == $i) { echo 'active'; } ?>" href="/projects/<?php echo $i; ?>"><?php echo $i ?></a></li>
+                <li class="page-item"><a class="page-link <?php if($currentPage == $i) { echo 'active'; } ?>" href="/projects/<?php echo $i; if($filterStatus){ echo "?status=" . $filterStatus; } ?>"><?php echo $i ?></a></li>
             <?php } ?>
-            <li class="page-item"><a class="page-link" href="/projects/<?php echo $nextPage; ?>">Next</a></li>
+            <li class="page-item"><a class="page-link" href="/projects/<?php echo $nextPage; if($filterStatus){ echo "?status=" . $filterStatus; } ?>">Next</a></li>
             <?php if ($currentPage < $totalPageCount) { ?>
-                <li class="page-item"><a class="page-link" href="/projects/<?php echo $totalPageCount; ?>">Last</a></li>
+                <li class="page-item"><a class="page-link" href="/projects/<?php echo $totalPageCount; if($filterStatus){ echo "?status=" . $filterStatus; } ?>">Last</a></li>
             <?php } ?>
         </ul>
     </nav>

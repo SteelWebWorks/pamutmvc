@@ -22,6 +22,13 @@ class ProjectsController extends BaseController
         $query = $this->database->getEntityManager()
             ->getRepository(Project::class)
             ->createQueryBuilder('p');
+        
+        $filterStatus = $this->request->getBody()['status'] ?? false;
+        
+        if ($filterStatus) {
+            $query->where('p.status = :status')
+                ->setParameter('status', $filterStatus);
+        }
 
         $paginator = new Paginator($query);
 
@@ -35,8 +42,10 @@ class ProjectsController extends BaseController
             ->setFirstResult(10*($currentPage-1))
             ->setMaxResults(10)
             ->getResult();
-        $this->view->renderContent('list', compact('projects', 'currentPage', 'nextPage', 'prevPage', 'totalPageCount'));
-
+        
+        $statuses = $this->database->getEntityManager()->getRepository(Status::class)->findAll();
+        
+        $this->view->renderContent('list', compact('projects', 'currentPage', 'nextPage', 'prevPage', 'totalPageCount', 'statuses', 'filterStatus'));
     }
 
     /**
@@ -153,7 +162,7 @@ class ProjectsController extends BaseController
         $this->database->getEntityManager()->remove($project);
         $this->database->getEntityManager()->flush();
         $projects = $this->database->getEntityManager()->getRepository(Project::class)->findAll();
-        echo $this->view->fetchResponse('list', compact('projects'));
+        $this->view->renderResponse('list', compact('projects'));
 
     }
 

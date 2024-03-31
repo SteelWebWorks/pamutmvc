@@ -18,9 +18,15 @@ class View
         exit;
     }
 
-    public function render(string $content, string $view): void
+    public function render(string $content, string $view, array $params = []): void
     {
         echo str_replace($content, $this->getView($view), $this->getView($this->layout));
+        exit;
+    }
+
+    public function renderResponse(string $view, array $params = []): void
+    {
+        echo $this->getView($view, $params);
         exit;
     }
 
