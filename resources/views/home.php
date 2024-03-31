@@ -1,2 +1,2 @@
 
-<h1>Hello wolrd</h1>
+<h1>Pamutlabor Próbafeladat MVC</h1>

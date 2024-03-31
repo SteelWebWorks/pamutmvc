@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 class Response
@@ -14,9 +16,9 @@ class Response
         header("Location: $url");
     }
 
-    public function json(array $data): true
+    public function json(array $data)
     {
         echo trim(json_encode($data));
-        return true;
+        exit;
     }
 }

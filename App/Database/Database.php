@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Database;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
 
 class Database
 {
     private Connection $connection;
+    private EntityManager $entityManager;
     public function __construct()
     {
         $connectionConfig = [
@@ -19,6 +24,11 @@ class Database
         ];
 
         $this->connection = DriverManager::getConnection($connectionConfig);
+
+        $this->entityManager = new \Doctrine\ORM\EntityManager($this->connection, \Doctrine\ORM\ORMSetup::createAttributeMetadataConfiguration(
+            paths: array(dirname(__DIR__) . "/App/Models"),
+            isDevMode: true,
+        ));
     }
 
     public function __call(string $name, array $arguments)
@@ -34,5 +44,10 @@ class Database
     public function getConnection()
     {
         return $this->connection;
+    }
+
+    public function getEntityManager()
+    {
+        return $this->entityManager;
     }
 }

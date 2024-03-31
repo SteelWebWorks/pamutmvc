@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 class View
@@ -13,13 +15,13 @@ class View
     public function renderContent(string $view, $params = []): void
     {
         echo str_replace('{{content}}', $this->getView($view, $params), $this->getView($this->layout));
-        return;
+        exit;
     }
 
     public function render(string $content, string $view): void
     {
         echo str_replace($content, $this->getView($view), $this->getView($this->layout));
-        return;
+        exit;
     }
 
     public function fetchContent(string $view, $params = []): bool | string

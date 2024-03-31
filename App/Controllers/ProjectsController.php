@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\Owner;
@@ -17,7 +19,7 @@ class ProjectsController extends BaseController
      */
     public function list(): void
     {
-        $query = $this->entityManager
+        $query = $this->database->getEntityManager()
             ->getRepository(Project::class)
             ->createQueryBuilder('p');
 
@@ -46,7 +48,7 @@ class ProjectsController extends BaseController
 
         $id = $this->request->getRouteParam('id');
 
-        $project = $this->entityManager->find(Project::class, $id);
+        $project = $this->database->getEntityManager()->find(Project::class, $id);
         $this->view->renderContent('read', compact('project'));
     }
 
@@ -55,8 +57,8 @@ class ProjectsController extends BaseController
      */
     public function create()
     {
-        $statuses = $this->entityManager->getRepository(Status::class)->findAll();
-        $owners = $this->entityManager->getRepository(Owner::class)->findAll();
+        $statuses = $this->database->getEntityManager()->getRepository(Status::class)->findAll();
+        $owners = $this->database->getEntityManager()->getRepository(Owner::class)->findAll();
         if ($this->request->isPost()) {
             $body = $this->request->getBody();
             $validation = new Validation();
@@ -79,10 +81,10 @@ class ProjectsController extends BaseController
                 $project = (new Project())
                     ->setTitle($body['title'])
                     ->setDescription($body['description'])
-                    ->setStatus($this->entityManager->find(Status::class, $body['status']));
+                    ->setStatus($this->database->getEntityManager()->find(Status::class, $body['status']));
 
                 if (isset($body['owner'])) {
-                    $project->setOwner($this->entityManager->find(Owner::class, $body['owner']));
+                    $project->setOwner($this->database->getEntityManager()->find(Owner::class, $body['owner']));
                 } else {
                     $owner = (new Owner())
                         ->setName($body['owner-name'])
@@ -90,8 +92,8 @@ class ProjectsController extends BaseController
                     $project->setOwner($owner);
                 }
 
-                $this->entityManager->persist($project);
-                $this->entityManager->flush();
+                $this->database->getEntityManager()->persist($project);
+                $this->database->getEntityManager()->flush();
                 $this->response->redirect('/project/' . $project->getId());
             }
             $view = $this->view->fetchResponse('form', [
@@ -114,9 +116,9 @@ class ProjectsController extends BaseController
      */
     public function edit(): void
     {
-        $statuses = $this->entityManager->getRepository(Status::class)->findAll();
-        $owners = $this->entityManager->getRepository(Owner::class)->findAll();
-        $project = $this->entityManager->find(Project::class, $this->request->getRouteParam('id'));
+        $statuses = $this->database->getEntityManager()->getRepository(Status::class)->findAll();
+        $owners = $this->database->getEntityManager()->getRepository(Owner::class)->findAll();
+        $project = $this->database->getEntityManager()->find(Project::class, $this->request->getRouteParam('id'));
         if ($this->request->isPost()) {
             $body = $this->request->getBody();
             $validation = new Validation();
@@ -127,9 +129,9 @@ class ProjectsController extends BaseController
                 $project
                     ->setTitle($body['title'])
                     ->setDescription($body['description'])
-                    ->setStatus($this->entityManager->find(Status::class, $body['status']))
-                    ->setOwner($this->entityManager->find(Owner::class, $body['owner']));
-                $this->entityManager->flush();
+                    ->setStatus($this->database->getEntityManager()->find(Status::class, $body['status']))
+                    ->setOwner($this->database->getEntityManager()->find(Owner::class, $body['owner']));
+                $this->database->getEntityManager()->flush();
                 $this->response->redirect('/project/' . $project->getId());
             }
             $this->view->renderContent('form', [
@@ -147,10 +149,10 @@ class ProjectsController extends BaseController
      */
     public function delete(): void
     {
-        $project = $this->entityManager->find(Project::class, $this->request->getRouteParam('id'));
-        $this->entityManager->remove($project);
-        $this->entityManager->flush();
-        $projects = $this->entityManager->getRepository(Project::class)->findAll();
+        $project = $this->database->getEntityManager()->find(Project::class, $this->request->getRouteParam('id'));
+        $this->database->getEntityManager()->remove($project);
+        $this->database->getEntityManager()->flush();
+        $projects = $this->database->getEntityManager()->getRepository(Project::class)->findAll();
         echo $this->view->fetchResponse('list', compact('projects'));
 
     }

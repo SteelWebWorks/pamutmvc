@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Projektlista</a>
+              <a class="nav-link active" aria-current="page" href="/projects">Projektlista</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/new">Új Projekt</a>

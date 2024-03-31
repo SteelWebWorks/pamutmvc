@@ -1,11 +1,23 @@
-<div id="project-list">
 <?php
 use App\Models\Project;
 /**
  * @var Project[]|array|object[] $projects
  * @var int $totalPageCount
- */
-foreach ($projects as $project) { ?>
+ */ ?>
+ 
+<script type="application/javascript">
+    $(function() {
+        $('a[data-project-id]').on('click', function(e){
+            e.preventDefault();
+            $.get("/project/" + $(this).data('project-id') + "/delete", function(response) {
+                $('div#project-list').html(response);
+            })
+        })
+    })
+</script>
+
+<div id="project-list">
+<?php foreach ($projects as $project) { ?>
     <div class="card mb-2">
         <div class="card-title p-3">
             <div class="d-flex justify-content-between">
@@ -19,23 +31,22 @@ foreach ($projects as $project) { ?>
         </div>
     </div>
 <?php } ?>
-    <nav aria-label="Page navigation example">
+
+<?php if (!empty($projects)) { ?>
+    <nav aria-label="Page navigation">
         <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <?php for($i=1; $i<=$totalPageCount; $i++) { ?>
-            <li class="page-item"><a class="page-link" href="#"><?php echo $i ?></a></li>
+            <?php if ($currentPage > 1) { ?>
+                <li class="page-item"><a class="page-link" href="/projects/1">First</a></li>
             <?php } ?>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            <li class="page-item"><a class="page-link" href="/projects/<?php echo $prevPage; ?>">Previous</a></li>
+            <?php for($i=1; $i<=$totalPageCount; $i++) { ?>
+                <li class="page-item"><a class="page-link <?php if($currentPage == $i) { echo 'active'; } ?>" href="/projects/<?php echo $i; ?>"><?php echo $i ?></a></li>
+            <?php } ?>
+            <li class="page-item"><a class="page-link" href="/projects/<?php echo $nextPage; ?>">Next</a></li>
+            <?php if ($currentPage < $totalPageCount) { ?>
+                <li class="page-item"><a class="page-link" href="/projects/<?php echo $totalPageCount; ?>">Last</a></li>
+            <?php } ?>
         </ul>
     </nav>
+<?php } ?>
 </div>
-<script type="application/javascript">
-    $(function() {
-        $('a[data-project-id]').on('click', function(e){
-            e.preventDefault();
-            $.get("/project/" + $(this).data('project-id') + "/delete", function(response) {
-                $('div#project-list').html(response);
-            })
-        })
-    })
-</script>

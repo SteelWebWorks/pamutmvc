@@ -6,8 +6,9 @@ use App\Http\Router;
 
 $router = new Router(new Request(), new Response());
 
-//$router->get('/', 'home');
-$router->get('/', "ProjectsController@list");
+$router->get('/', 'home');
+$router->get('/projects', "ProjectsController@list");
+$router->get('/projects/{page}', "ProjectsController@list");
 $router->get('/new', "ProjectsController@create");
 $router->get('/project/{id}', "ProjectsController@read");
 $router->get('/project/{id}/edit', "ProjectsController@edit");

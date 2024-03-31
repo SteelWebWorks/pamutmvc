@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Database\Database;
@@ -41,7 +43,7 @@ class Validation
                 if ($ruleName === self::RULE_UNIQUE) {
                     $uniqueAttr = $rule['attribute'] ?? $field;
                     $className = $rule['class'];
-                    $record = entityManager()->getRepository($className)->findBy([$uniqueAttr => $value]);
+                    $record = (new Database())->getEntityManager()->getRepository($className)->findBy([$uniqueAttr => $value]);
 
                     if ($record) {
                         $this->addErrorByRule($field, self::RULE_UNIQUE);
