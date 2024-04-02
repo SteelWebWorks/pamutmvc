@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Database class
+ * Manages the database connection and provides the connection object
+ */
 declare(strict_types=1);
 
 namespace App\Database;

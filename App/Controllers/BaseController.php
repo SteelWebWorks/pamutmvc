@@ -1,4 +1,8 @@
 <?php
+/**
+ * BaseController
+ * Provides the basic functionality for the controllers
+ */
 
 declare(strict_types=1);
 

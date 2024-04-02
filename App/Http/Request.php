@@ -1,4 +1,8 @@
 <?php
+/**
+ * Request class
+ * Provides the request data
+ */
 
 declare(strict_types=1);
 

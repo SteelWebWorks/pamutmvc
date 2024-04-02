@@ -1,4 +1,8 @@
 <?php
+/**
+ * Validation class
+ * Provides the validation functionality
+ */
 
 declare(strict_types=1);
 
@@ -16,6 +20,12 @@ class Validation
     const RULE_UNIQUE = 'unique';
     private array $errors = [];
 
+    /**
+     * Validate the given values against the validation rules
+     * @param array $validationRules
+     * @param array $values
+     * @return bool
+     */
     public function validate(array $validationRules, array $values): bool
     {
         foreach ($validationRules as $field => $rules) {
@@ -54,17 +64,32 @@ class Validation
         return empty($this->errors);
     }
 
+    /**
+     * Get the validation errors
+     * @return array
+     */
     public function getErrors(): array
     {
         return $this->errors;
     }
 
+    /**
+     * Add an error to the errors array
+     * @param string $field
+     * @param string $message
+     */
     public function addError(string $field, string $message): void
     {
         $this->errors[$field][] = $message;
     }
 
-    protected function addErrorByRule(string $field, string $rule, $params = []): void
+    /**
+     * Add an error to the errors array by rule
+     * @param string $field
+     * @param string $rule
+     * @param array $params
+     */
+    protected function addErrorByRule(string $field, string $rule, array $params = []): void
     {
         $params['field'] ??= $field;
         $errorMessage = self::errorMessage($rule);
@@ -73,6 +98,11 @@ class Validation
         }
         $this->errors[$field][] = $errorMessage;
     }
+
+    /**
+     * Get the error messages
+     * @return array
+     */
     public function errorMessages() : array
     {
         return [
@@ -85,6 +115,11 @@ class Validation
         ];
     }
 
+    /**
+     * Get the error message for the given rule
+     * @param $rule
+     * @return string
+     */
     public function errorMessage($rule): string
     {
         return $this->errorMessages()[$rule];

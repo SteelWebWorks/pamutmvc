@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Router class
+ */
 declare(strict_types=1);
 
 namespace App\Http;
@@ -9,8 +11,20 @@ use App\View;
 class Router
 {
 
+    /**
+     * List of routes
+     * @var array $routes
+     */
     protected array $routes = [];
+    /**
+     * Request object
+     * @var Request $request
+     */
     public Request $request;
+    /**
+     * Response object
+     * @var Response $response
+     */
     public Response $response;
 
     public function __construct(Request $request, Response $response)
@@ -21,54 +35,65 @@ class Router
 
     }
 
-    public function get(string $path, $callback): void
+    /**
+     * Register a new GET route
+     * @param string $path
+     * @param string|array $callback
+     */
+    public function get(string $path, string|array $callback): void
     {
         $this->routes['get'][$path] = $callback;
     }
 
-    public function post(string $path, $callback): void
+    /**
+     * Register a new POST route
+     * @param string $path
+     * @param string|array $callback
+     */
+    public function post(string $path, string|array $callback): void
     {
         $this->routes['post'][$path] = $callback;
     }
 
-    public function getRouteMap($method): array
+    /**
+     * Return the list of routes for a given method
+     * @param string $method
+     * @return array
+     */
+    public function getRouteMap(string $method): array
     {
         return $this->routes[$method] ?? [];
     }
 
+    /**
+     * Get the callback for the current route
+     * @return mixed
+     */
     private function getCallback(): mixed
     {
         $method = $this->request->getMethod();
         $url = $this->request->getPath();
-        // Trim slashes
+
         $url = trim($url, '/');
-        // Get all routes for current request method
+
         $routes = $this->getRouteMap($method);
 
         $routeParams = false;
-        /* echo "<pre>";
-        var_dump($routes);
-        echo "</pre>"; */
 
-        // Start iterating registed routes
         foreach ($routes as $route => $callback) {
-            // Trim slashes
+
             $route = trim($route, '/');
             $routeNames = [];
 
             if (!$route) {
                 continue;
             }
-            /* echo "<pre>";
-            var_dump($route);
-            echo "</pre>"; */
+
             // Find all route names from route and save in $routeNames
             if (preg_match_all('/\{(\w+)(:[^}]+)?}/', $route, $matches)) {
                 $routeNames = $matches[1];
             }
-            /* echo "<pre>";
-            var_dump($routeNames);
-            echo "</pre>"; */
+
             // Convert route name into regex pattern
             $routeRegex = "@^" . preg_replace_callback('/\{\w+(:([^}]+))?}/', fn($m) => isset($m[2]) ? "({$m[2]})" : '(\w+)', $route) . "$@";
 
@@ -89,9 +114,10 @@ class Router
     }
 
     /**
+     * Resolve the current route
      * @return mixed
      */
-    public function resolve(): mixed
+    public function resolve()
     {
         $view = new View();
         $method = $this->request->getMethod();
@@ -102,7 +128,6 @@ class Router
             $callback = $this->getCallback();
             if ($callback === false) {
                 $view->renderContent('_404');
-                exit;
             }
         }
 

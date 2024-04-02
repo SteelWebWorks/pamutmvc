@@ -1,4 +1,8 @@
 <?php
+/**
+ * Owner model
+ * Represents the owner of a project
+ */
 
 declare(strict_types=1);
 
@@ -47,6 +51,10 @@ class Owner
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @return Owner
+     */
     public function setName(string $name): Owner
     {
         $this->name = $name;
@@ -54,6 +62,10 @@ class Owner
         return $this;
     }
 
+    /**
+     * @param string $email
+     * @return Owner
+     */
     public function setEmail(string $email): Owner
     {
         $this->email = $email;
@@ -61,21 +73,34 @@ class Owner
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
+    /**
+     * @param Project $project
+     * @return Owner
+     */
     public function addProject(Project $project): Owner
     {
         $project->setOwner($this);
@@ -85,6 +110,9 @@ class Owner
         return $this;
     }
 
+    /**
+     * @return Collection
+     */
     public function getProjects(): Collection
     {
         return  $this->projects;

@@ -11,11 +11,13 @@ use App\Validation;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
+use JetBrains\PhpStorm\NoReturn;
 
 class ProjectsController extends BaseController
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function list(): void
     {
@@ -52,7 +54,7 @@ class ProjectsController extends BaseController
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function read(): void
+    #[NoReturn] public function read(): void
     {
 
         $id = $this->request->getRouteParam('id');
@@ -64,7 +66,7 @@ class ProjectsController extends BaseController
     /**
      * @throws ORMException
      */
-    public function create()
+    #[NoReturn] public function create(): mixed
     {
         $statuses = $this->database->getEntityManager()->getRepository(Status::class)->findAll();
         $owners = $this->database->getEntityManager()->getRepository(Owner::class)->findAll();
@@ -123,7 +125,7 @@ class ProjectsController extends BaseController
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function edit(): void
+    #[NoReturn] public function edit(): void
     {
         $statuses = $this->database->getEntityManager()->getRepository(Status::class)->findAll();
         $owners = $this->database->getEntityManager()->getRepository(Owner::class)->findAll();
@@ -156,7 +158,7 @@ class ProjectsController extends BaseController
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function delete(): void
+    #[NoReturn] public function delete(): void
     {
         $project = $this->database->getEntityManager()->find(Project::class, $this->request->getRouteParam('id'));
         $this->database->getEntityManager()->remove($project);

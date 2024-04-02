@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Project model
+ * Represents a project
+ */
 declare(strict_types=1);
 
 namespace App\Models;
@@ -56,11 +59,20 @@ class Project
     #[JoinColumn(name: "owner_id", referencedColumnName: "id", nullable: false)]
     private Owner $owner;
 
+    /**
+     * Get the project ID
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * Set the project ID
+     * @param int $id
+     * @return Project
+     */
     public function setId(int $id): Project
     {
         $this->id = $id;
@@ -68,11 +80,20 @@ class Project
         return $this;
     }
 
+    /**
+     * Get the status ID
+     * @return int
+     */
     public function getStatusId(): int
     {
         return $this->statusId;
     }
 
+    /**
+     * Set the status ID
+     * @param int $statusId
+     * @return Project
+     */
     public function setStatusId(int $statusId): Project
     {
         $this->statusId = $statusId;
@@ -80,11 +101,20 @@ class Project
         return $this;
     }
 
+    /**
+     * Get the project title
+     * @return string
+     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
+    /**
+     * Set the project title
+     * @param string $title
+     * @return Project
+     */
     public function setTitle(string $title): Project
     {
         $this->title = $title;
@@ -92,11 +122,20 @@ class Project
         return $this;
     }
 
+    /**
+     * Get the project description
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * Set the project description
+     * @param string $description
+     * @return Project
+     */
     public function setDescription(string $description): Project
     {
         $this->description = $description;
@@ -104,6 +143,11 @@ class Project
         return $this;
     }
 
+    /**
+     * Set the Project status object
+     * @param Status $status
+     * @return Project
+     */
     public function setStatus(Status $status): Project
     {
         $this->status = $status;
@@ -111,10 +155,20 @@ class Project
         return $this;
     }
 
+    /**
+     * Get the Project status object
+     * @return Status
+     */
     public function getStatus(): Status
     {
         return $this->status;
     }
+
+    /**
+     * Set the Project owner object
+     * @param Owner $owner
+     * @return Project
+     */
     public function setOwner(Owner $owner): Project
     {
         $this->owner = $owner;
@@ -122,6 +176,10 @@ class Project
         return $this;
     }
 
+    /**
+     * Get the Project owner object
+     * @return Owner
+     */
     public function getOwner(): Owner
     {
         return $this->owner;

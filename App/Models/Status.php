@@ -39,11 +39,20 @@ class Status
         return $this;
     }
 
+    /**
+     * Get the Status ID
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * Set the Status ID
+     * @param int $id
+     * @return Status
+     */
     public function setId(int $id): Status
     {
         $this->id = $id;
@@ -51,11 +60,20 @@ class Status
         return $this;
     }
 
+    /**
+     * Get the Status key
+     * @return string
+     */
     public function getKey(): string
     {
         return $this->key;
     }
 
+    /**
+     * Set the Status key
+     * @param string $key
+     * @return Status
+     */
     public function setKey(string $key): Status
     {
         $this->key = $key;
@@ -63,11 +81,20 @@ class Status
         return $this;
     }
 
+    /**
+     * Get the Status name
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * Set the Status name
+     * @param string $name
+     * @return Status
+     */
     public function setName(string $name): Status
     {
         $this->name = $name;
@@ -75,6 +102,11 @@ class Status
         return $this;
     }
 
+    /**
+     * Add a project to the status
+     * @param Project $project
+     * @return Status
+     */
     public function addProject(Project $project): Status
     {
         $project->setStatus($this);
@@ -84,6 +116,10 @@ class Status
         return $this;
     }
 
+    /**
+     * Get the projects associated with the status
+     * @return Collection
+     */
     public function getProjects(): Collection
     {
         return $this->projects;

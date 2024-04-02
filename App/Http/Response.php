@@ -1,22 +1,37 @@
 <?php
+/**
+ * Response class
+ * Provides the response data
+ */
 
 declare(strict_types=1);
 
 namespace App\Http;
 
+use JetBrains\PhpStorm\NoReturn;
+
 class Response
 {
-    public function setStatusCode(int $code)
+    /**
+     * Set the status code for the response
+     */
+    public function setStatusCode(int $code): void
     {
         http_response_code($code);
     }
 
-    public function redirect($url)
+    /**
+     * Redirect to a different page
+     */
+    public function redirect($url): void
     {
         header("Location: $url");
     }
 
-    public function json(array $data)
+    /**
+     * Send a JSON response
+     */
+    #[NoReturn] public function json(array $data): void
     {
         echo trim(json_encode($data));
         exit;
